@@ -1,0 +1,133 @@
+---
+title: "Percentage Children suffering exactly two deprivation"
+output-dir: docs
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+#### Khaman Singh - 22266466 - Assignment 2 - MT5000
+![Logo](logo.JPG){fig-align="right"}
+![Child](child.JPG)
+```{r}
+library(tidyverse)
+unicef_indicator_1<- read_csv("/cloud/project/unicef_indicator_1.csv")
+```
+## World Map of Percentage Children suffering exactly two deprivation.
+Sub saharan African countries are most prone to children suffering from deprivation.
+```{r}
+map_world <- map_data("world") 
+map_Unicef1 <- full_join(map_world, unicef_indicator_1, by = c("region" = "country"))
+ggplot(data = map_Unicef1) +
+  aes(x = long, y = lat, group = group, fill = obs_value) +
+  geom_polygon()
+```
+
+### Poverty in Children
+1. Children suffering from two deprivation are likely to suffer from **physical** and **psychological** health problems. 
+2. They may experience difficulty in acquiring **adequate nutrition**, **shelter**, **education**, and access to **health** care services. 
+3. They are more likely to experience **social exclusion**, which can have a negative impact on their self-esteem and **emotional wellbeing**.
+4. They may also have **poor academic** performance, increased risk of substance abuse, and increased risk of **criminal behavior**. 
+
+
+
+
+
+
+
+
+
+
+```{r}
+#| label: setup
+#| include: false
+library(tidyverse)
+unicef_indicator_1<- read_csv("/cloud/project/unicef_indicator_1.csv")
+```
+## Bar Chart of Percentage Children suffering exactly two deprivation in Unicef Indicator 1.
+Year 2014 saw the highest observed values of sum of percentage of children suffering exactly two deprivation
+```{r}
+unicef_by_year_new <- unicef_indicator_1 %>% 
+  group_by(time_period) %>% 
+  summarise(Sum = sum(obs_value))
+ggplot(data = unicef_by_year_new) +
+  aes(x = time_period, y = Sum, fill = Sum) +
+  geom_col() +
+theme_linedraw() +
+theme_dark() +
+theme(text = element_text(size = 12)) +
+labs(
+    x = "Time Period",
+    y = "Sum of Obs Values",
+    title = "Bar Graph"
+  )
+```
+
+
+```{r}
+library(tidyverse)
+unicef_indicator_1<- read_csv("/cloud/project/unicef_indicator_1.csv")
+unicef_metadata<- read_csv("/cloud/project/unicef_metadata.csv")
+
+```
+# Scatter Plot of Children Suffering exactly two deprications
+Scatterplot Figure.
+```{r}
+Unicef_filter1 <- filter(unicef_indicator_1, sex == "Total")
+Unicef_select1 <- Unicef_filter1 %>%
+select(country, time_period, obs_value, sex)
+ 
+Unicef_Metadata1 <- unicef_metadata %>%
+select(country, time_period = year, `GNI (current US$)`, `Life expectancy at birth, total (years)`, `Population, total`)
+
+table_manualfull_joined <- full_join(Unicef_select1, Unicef_Metadata1, by = c("time_period", "country"))
+
+ggplot(data = table_manualfull_joined) +
+  aes(x = time_period, y = `Life expectancy at birth, total (years)`, colour = country) +
+  geom_point() +
+geom_smooth(method = "lm") +
+  theme(legend.position="none")
+```
+
+
+## Focus on Uganda
+![Uganda](uganda.JPG)
+
+```{r}
+library(tidyverse)
+unicef_metadata<- read_csv("/cloud/project/unicef_metadata.csv")
+```
+# Line Graph
+Line Graph of children suffering from poverty
+```{r}
+ggplot(data = unicef_metadata) +
+  aes(x = year, y = `Life expectancy at birth, total (years)`, color = country) +
+  geom_line() +
+  labs(
+    x = "Year ",
+    y = "Life Expectancy",
+    title = "Evolution of life expectancy"
+  ) +
+
+  guides(color ="none") 
+```
+
+
+***How Children suffering from Deprivation can be saved:***
+
+-   Provide Access to Education: Education is one of the most important ways to empower children and break the cycle of poverty and deprivation. Invest in educational infrastructure and initiatives that provide access to education for all children in the area.
+
+-  Improve Nutrition and Health Care: Make sure children have access to nutritious food and health care services. Implement programs that provide free or subsidized meals, as well as promote health and nutrition education.
+
+-  Provide Basic Needs: Ensure that children have access to basic needs such as clean water, sanitation, and shelter. Invest in resources that give children and families access to these basic needs.
+
+-  Combat Exploitation: Ensure that children are not exploited by providing resources and services that protect them from exploitation and abuse.
+
+-  Strengthen Families and Communities: Strengthen families and communities by investing in initiatives that provide access to resources, job opportunities, and community development. These initiatives can help break the cycle of poverty and deprivation.
+
+## "Donate Now to Give Children a Brighter Future!"
+
+![Donate](donate.JPG)
+
+
+
